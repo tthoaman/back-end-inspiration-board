@@ -15,5 +15,5 @@ class Board(db.Model):
         }
 
     @classmethod
-    def from_dict(cls, goal_data):
-        return cls(title=goal_data["title"])
+    def from_dict(cls, board_data):
+        return cls(title=board_data["title"], owner=board_data["owner"])
