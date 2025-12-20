@@ -7,13 +7,13 @@ from ..db import db
 class Card(db.Model):
     card_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     message: Mapped[str]
-    like_count: Mapped[int]
-    board_id: Mapped[Optional[int]] = mapped_column(ForeignKey("board.id"))
+    likes_count: Mapped[int]
+    board_id: Mapped[Optional[int]] = mapped_column(ForeignKey("board.board_id"))
     board: Mapped[Optional["Board"]] = relationship(back_populates="cards")
     
     def to_dict(self):
         card_as_dict = {
-            "card_id": getattr(self, "id", None),
+            "card_id": getattr(self, "card_id", None),
             "message": getattr(self, "message", None),
             "like_count": getattr(self, "like_count", None),
             "board_id": getattr(self, "board_id", None)
@@ -26,6 +26,6 @@ class Card(db.Model):
     def from_dict(cls, dict):
         return cls(
             message=dict["message"],
-            like_count=dict["like_count"],
+            likes_count=dict["likes_count"],
             board_id=dict.get("board_id")
         )
