@@ -6,25 +6,21 @@ from ..db import db
 class Card(db.Model):
     card_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     message: Mapped[str]
-    likes_count: Mapped[int]
+    likes_count: Mapped[Optional[int]] = mapped_column(default=0)
     board_id: Mapped[int] = mapped_column(ForeignKey("board.board_id"), nullable=False)
     board: Mapped["Board"] = relationship(back_populates="cards")
     
     def to_dict(self):
-        card_as_dict = {
-            "card_id": getattr(self, "card_id", None),
-            "message": getattr(self, "message", None),
-            "like_count": getattr(self, "like_count", None),
-            "board_id": getattr(self, "board_id", None)
+        return {
+            "card_id": self.card_id,
+            "message": self.message,
+            "likes_count": self.likes_count
         }
-        if self.board:
-            card_as_dict["board_id"] = self.board_id
-        return card_as_dict
-    
+
     @classmethod
     def from_dict(cls, dict):
         return cls(
             message=dict["message"],
-            likes_count=dict["likes_count"],
-            board_id=dict.get("board_id")
+            likes_count=dict.get("likes_count", 0),
+            board_id=dict["board_id"],
         )
