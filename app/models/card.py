@@ -5,8 +5,8 @@ from ..db import db
 
 class Card(db.Model):
     card_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    message: Mapped[str]
-    likes_count: Mapped[Optional[int]] = mapped_column(default=0)
+    message: Mapped[str] = mapped_column(nullable=False)
+    likes_count: Mapped[int] = mapped_column(default=0, nullable=False)      
     board_id: Mapped[int] = mapped_column(ForeignKey("board.board_id"), nullable=False)
     board: Mapped["Board"] = relationship(back_populates="cards")
     
@@ -16,11 +16,11 @@ class Card(db.Model):
             "message": self.message,
             "likes_count": self.likes_count
         }
-
+    
     @classmethod
     def from_dict(cls, dict):
         return cls(
             message=dict["message"],
-            likes_count=dict.get("likes_count", 0),
-            board_id=dict["board_id"],
+            likes_count=dict.get("likes_count"),
+            board_id=dict.get("board_id")
         )
