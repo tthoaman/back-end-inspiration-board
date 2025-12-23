@@ -5,8 +5,8 @@ from ..db import db
 
 class Card(db.Model):
     card_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    message: Mapped[str]
-    likes_count: Mapped[int]
+    message: Mapped[str] = mapped_column(nullable=False)
+    likes_count: Mapped[int] = mapped_column(nullable=False)      
     board_id: Mapped[int] = mapped_column(ForeignKey("board.board_id"), nullable=False)
     board: Mapped["Board"] = relationship(back_populates="cards")
     
@@ -14,7 +14,7 @@ class Card(db.Model):
         card_as_dict = {
             "card_id": getattr(self, "card_id", None),
             "message": getattr(self, "message", None),
-            "like_count": getattr(self, "like_count", None),
+            "likes_count": getattr(self, "likes_count", None),
             "board_id": getattr(self, "board_id", None)
         }
         if self.board:
