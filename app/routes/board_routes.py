@@ -22,3 +22,11 @@ def create_card_on_board(board_id):
 def get_board(board_id):
     board = validate_model(Board, board_id)
     return board.to_dict(), 200
+
+@bp.get("/<board_id>/cards")
+def get_cards_by_board(board_id):
+
+    board = validate_model(Board, board_id)
+    cards = [card.to_dict() for card in board.cards]
+
+    return { cards }, 200
