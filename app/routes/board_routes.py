@@ -18,3 +18,7 @@ def create_card_on_board(board_id):
     request_body = request.get_json()
     return create_model(Card, {**request_body, "board_id": board.board_id})
 
+@bp.get("/<board_id>")
+def get_board(board_id):
+    board = validate_model(Board, board_id)
+    return board.to_dict(), 200
