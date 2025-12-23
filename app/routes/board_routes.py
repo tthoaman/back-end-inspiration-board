@@ -2,7 +2,7 @@ from flask import Blueprint, request, abort, make_response
 from app.models.board import Board
 from app.models.card import Card
 from ..db import db
-from .routes_utilities import create_model, validate_model
+from app.routes.route_utilities import validate_model, create_model
 
 bp = Blueprint("boards_bp", __name__, url_prefix="/boards")
 

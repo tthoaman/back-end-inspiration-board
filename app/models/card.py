@@ -21,6 +21,6 @@ class Card(db.Model):
     def from_dict(cls, dict):
         return cls(
             message=dict["message"],
-            likes_count=dict.get("likes_count"),
-            board_id=dict.get("board_id")
+            likes_count=dict.get("likes_count", 0),
+            board_id=dict["board_id"]
         )
