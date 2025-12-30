@@ -25,5 +25,12 @@ def create_app(config=None):
     app.register_blueprint(board_bp)
     app.register_blueprint(card_bp)
 
-    CORS(app, resources={r"/*": {"origins": allowed}})
+    CORS(
+        app,
+        resources={r"/*": {"origins": allowed}},
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"],
+        supports_credentials=False,
+    )
+
     return app
