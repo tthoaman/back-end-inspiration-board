@@ -53,3 +53,23 @@ def delete_card_on_board(board_id, card_id):
     db.session.delete(card)
     db.session.commit()
     return {"details": f'Card {card_id} successfully deleted from Board {board_id}'}, 200
+
+@bp.patch("/<board_id>/cards/<card_id>/like")
+def like_card(board_id, card_id):
+    board = validate_model(Board, board_id)
+    card = validate_model(Card, card_id)
+
+    if card.board_id != board.board_id:
+        abort(make_response(
+        {"details": "Card does not belong to this board"},404
+    ))
+
+    card.likes_count += 1
+    db.session.commit()
+
+    return {
+        "card_id": card.card_id,
+        "message": card.message,
+        "likes_count": card.likes_count,
+        "board_id": card.board_id
+    }, 200
