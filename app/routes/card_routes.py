@@ -12,3 +12,16 @@ def delete_card(card_id):
     db.session.delete(card)
     db.session.commit()
     return Response(status=204, mimetype="application/json")
+
+@bp.post("/<card_id>/like")
+def like_card(card_id):
+    card = validate_model(Card, card_id)
+
+    card.likes_count += 1
+    db.session.commit()
+
+    return {
+        "card_id": card.card_id,
+        "message": card.message,
+        "likes_count": card.likes_count
+    }, 200

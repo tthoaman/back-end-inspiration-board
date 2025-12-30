@@ -5,7 +5,11 @@ class Board(db.Model):
     board_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     owner: Mapped[str] = mapped_column(nullable=False)
-    cards: Mapped[list["Card"]] = relationship("Card", back_populates="board")
+    cards: Mapped[list["Card"]] = relationship(
+        "Card",
+        back_populates="board",
+        order_by="Card.card_id"
+    )
 
     def to_dict(self):
         board_dict = {
