@@ -9,6 +9,9 @@ import os
 def create_app(config=None):
     app = Flask(__name__)
 
+    origins = os.getenv("FRONTEND_ORIGINS", "http://localhost:5173")
+    allowed = [o.strip() for o in origins.split(",") if o.strip()]
+
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
@@ -22,5 +25,5 @@ def create_app(config=None):
     app.register_blueprint(board_bp)
     app.register_blueprint(card_bp)
 
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": allowed}})
     return app
