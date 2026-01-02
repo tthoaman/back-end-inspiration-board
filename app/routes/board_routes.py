@@ -73,3 +73,23 @@ def like_card(board_id, card_id):
         "likes_count": card.likes_count,
         "board_id": card.board_id
     }, 200
+
+
+@bp.put("/<board_id>/cards/<card_id>")
+def edit_card_on_board(board_id, card_id):
+    board = validate_model(Board, board_id)
+    card = validate_model(Card, card_id)
+    if card.board_id != board.board_id:
+        abort(make_response(
+            {"details": "card does not belong to this board"}, 404
+        ))
+    data = request.get_json()
+
+    if "message" in data:
+        card.message = data["message"]
+    if "likes_count" in data:
+        card.likes_count = data["likes_count"]
+    
+    db.session.commit()
+    
+    return card.to_dict(), 200
