@@ -8,7 +8,7 @@ class Card(db.Model):
     message: Mapped[str] = mapped_column(nullable=False)
     likes_count: Mapped[int] = mapped_column(default=0, nullable=False)      
     board_id: Mapped[int] = mapped_column(ForeignKey("board.board_id"), nullable=False)
-    board: Mapped["Board"] = relationship(back_populates="cards")
+    board: Mapped["Board"] = relationship("Board", back_populates="cards")
     
     def to_dict(self):
         return {
