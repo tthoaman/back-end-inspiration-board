@@ -8,7 +8,8 @@ class Board(db.Model):
     cards: Mapped[list["Card"]] = relationship(
         "Card",
         back_populates="board",
-        order_by="Card.card_id"
+        order_by="Card.card_id",
+        cascade="all, delete-orphan"
     )
 
     def to_dict(self):
